@@ -17,13 +17,27 @@ class Library {
         "HiberLink",
         "un MacBook Pro i7 2018 avec quatre ports thunderbolt 3 gris sidéral",
         "un iPad Pro 2020 avec un scanner LiDAR",
+        "un iPhone 11 Pro 256 GB vert nuit",
+        "une Apple Watch",
         "un ex beau-père",
         "une nouvelle voiture",
+        "un lingo d'or",
+        "le titanic",
+        "une villa en Corse",
+        "une piscine à débordement",
+        "Nathan Fallet",
         "Bruno Paiva",
         "Cédric Loneux",
         "Léo Duff",
+        "Tim Cook",
         "PickADish",
-        "FMobile"
+        "le Groupe MINASTE",
+        "FMobile",
+        "Apple",
+        "une soupe à l'oignon",
+        "des pommes de terre sautées",
+        "de la compote de pommes",
+        "un café glacé"
     ]
     
 }
