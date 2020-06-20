@@ -21,6 +21,7 @@ class MainViewController: UIViewController {
         
         // Nav bar
         title = "Mon ex beau-père"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Paramètres", style: .plain, target: self, action: #selector(openSettings(_:)))
         
         // Add views
         view.addSubview(label)
@@ -43,7 +44,6 @@ class MainViewController: UIViewController {
         generate.heightAnchor.constraint(equalToConstant: 50).isActive = true
         generate.setTitle("Générer", for: .normal)
         generate.setTitleColor(.white, for: .normal)
-        generate.backgroundColor = .systemBlue
         generate.layer.masksToBounds = true
         generate.layer.cornerRadius = 10
         generate.addTarget(self, action: #selector(generateLabel(_:)), for: .touchUpInside)
@@ -57,7 +57,6 @@ class MainViewController: UIViewController {
         share.heightAnchor.constraint(equalToConstant: 50).isActive = true
         share.setTitle("Partager", for: .normal)
         share.setTitleColor(.white, for: .normal)
-        share.backgroundColor = .systemBlue
         share.layer.masksToBounds = true
         share.layer.cornerRadius = 10
         share.addTarget(self, action: #selector(shareToTwitter(_:)), for: .touchUpInside)
@@ -68,6 +67,9 @@ class MainViewController: UIViewController {
 
     // Handle generate button
     @objc func generateLabel(_ sender: Any) {
+        // Get data (preferences)
+        let datas = UserDefaults.standard
+        
         // Get a random element from library
         guard let element = Library.objects.randomElement() else { return }
         
@@ -78,12 +80,12 @@ class MainViewController: UIViewController {
         label.text = text
         
         // Add a vibration
-        if #available(iOS 10.0, *) {
+        if #available(iOS 10.0, *), datas.value(forKey: "vibrate") as? Bool ?? true {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         }
         
         // Change color
-        if false {
+        if datas.value(forKey: "colors") as? Bool ?? false {
             // Generate colors
             let background = UIColor.custom.randomElement()
             var tint: UIColor?
@@ -96,7 +98,12 @@ class MainViewController: UIViewController {
             label.textColor = .white
             generate.backgroundColor = tint
             share.backgroundColor = tint
-            navigationController?.navigationBar.barTintColor = tint
+        } else {
+            // Apply default colors
+            view.backgroundColor = .background
+            label.textColor = .text
+            generate.backgroundColor = .systemBlue
+            share.backgroundColor = .systemBlue
         }
     }
     
@@ -119,6 +126,11 @@ class MainViewController: UIViewController {
         } else {
             UIApplication.shared.openURL(url)
         }
+    }
+    
+    @objc func openSettings(_ sender: UIBarButtonItem) {
+        // Open the settings view controller
+        navigationController?.pushViewController(SettingsTableViewController(style: .grouped), animated: true)
     }
 
 }

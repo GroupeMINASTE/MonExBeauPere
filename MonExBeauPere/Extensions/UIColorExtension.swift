@@ -11,11 +11,20 @@ import UIKit
 extension UIColor {
     
     // Background color
-    var background: UIColor {
+    static var background: UIColor {
         if #available(iOS 13, *) {
             return .systemBackground
         } else {
             return .white
+        }
+    }
+    
+    // Text color
+    static var text: UIColor {
+        if #available(iOS 13, *) {
+            return .label
+        } else {
+            return .black
         }
     }
     
