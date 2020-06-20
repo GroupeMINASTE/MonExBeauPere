@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import GameKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, GKGameCenterControllerDelegate {
     
     // Views
+    let stackView = UIStackView()
     let label = UILabel()
+    let details = UILabel()
+    let wealth = UILabel()
     let generate = UIButton()
     let share = UIButton()
 
@@ -26,12 +30,13 @@ class MainViewController: UIViewController {
         // Add views
         view.backgroundColor = .background
         view.addSubview(label)
-        view.addSubview(generate)
-        view.addSubview(share)
+        view.addSubview(details)
+        view.addSubview(wealth)
+        view.addSubview(stackView)
         
         // Configure label
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -66).isActive = true
+        label.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -50).isActive = true
         label.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
         label.font = .systemFont(ofSize: 24)
@@ -39,10 +44,39 @@ class MainViewController: UIViewController {
         label.numberOfLines = 0
         label.textColor = .text
         
+        // Configure amount
+        details.translatesAutoresizingMaskIntoConstraints = false
+        details.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16).isActive = true
+        details.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
+        details.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
+        details.font = .systemFont(ofSize: 17)
+        details.textAlignment = .center
+        details.textColor = .text
+        
+        // Configure wealth
+        wealth.translatesAutoresizingMaskIntoConstraints = false
+        wealth.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 16).isActive = true
+        wealth.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
+        wealth.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
+        wealth.font = .systemFont(ofSize: 17)
+        wealth.textAlignment = .center
+        wealth.textColor = .text
+        wealth.isUserInteractionEnabled = true
+        wealth.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openLeaderboard(_:))))
+        
+        // Configure the stack view
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16).isActive = true
+        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+        stackView.spacing = 16
+        stackView.distribution = .fillEqually
+        stackView.addArrangedSubview(generate)
+        stackView.addArrangedSubview(share)
+        
         // Configure generate
         generate.translatesAutoresizingMaskIntoConstraints = false
-        generate.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
-        generate.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        generate.widthAnchor.constraint(equalToConstant: 250).isActive = true
         generate.heightAnchor.constraint(equalToConstant: 50).isActive = true
         generate.setTitle("Générer", for: .normal)
         generate.setTitleColor(.white, for: .normal)
@@ -53,10 +87,7 @@ class MainViewController: UIViewController {
         
         // Configure share
         share.translatesAutoresizingMaskIntoConstraints = false
-        share.topAnchor.constraint(equalTo: generate.bottomAnchor, constant: 16).isActive = true
-        share.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16).isActive = true
-        share.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
-        share.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        share.widthAnchor.constraint(equalToConstant: 250).isActive = true
         share.heightAnchor.constraint(equalToConstant: 50).isActive = true
         share.setTitle("Partager", for: .normal)
         share.setTitleColor(.white, for: .normal)
@@ -65,8 +96,31 @@ class MainViewController: UIViewController {
         share.layer.cornerRadius = 10
         share.addTarget(self, action: #selector(shareToTwitter(_:)), for: .touchUpInside)
         
-        // Load a default sentence
-        generateLabel(self)
+        // Game center authentification
+        authenticatePlayer()
+        
+        // Load wealth
+        updateWealth()
+    }
+    
+    // Authenticate player
+    func authenticatePlayer() {
+        // Get local player
+        let localPlayer = GKLocalPlayer.local
+        
+        // Set authentification handler
+        localPlayer.authenticateHandler = { viewController, error in
+            // Check if a view controller should be shown
+            if let viewController = viewController {
+                self.present(viewController, animated: true, completion: nil)
+            }
+            
+            // Check if player is authenticated
+            else if localPlayer.isAuthenticated {
+                // Load leaderboards
+                GKLeaderboard.load()
+            }
+        }
     }
 
     // Handle generate button
@@ -75,18 +129,52 @@ class MainViewController: UIViewController {
         let datas = UserDefaults.standard
         
         // Get a random element from library
-        guard let element = Library.objects.randomElement() else { return }
+        guard let element = Gift.library.randomElement() else { return }
+        
+        // Get count and save the new count
+        let count = datas.integer(forKey: "gift_\(element.id)") + 1
+        datas.set(count, forKey: "gift_\(element.id)")
         
         // Create text
-        let text = String(format: "Mon ex beau-père m'a offert %@, je ne sais pas quoi dire...", element)
+        let text = "Mon ex beau-père m'a offert \(element.name), je ne sais pas quoi dire..."
+        let detailsText = "+ \(element.value.euroPrice ?? "0 €")"
         
         // Set text to label
         label.text = text
+        details.text = detailsText
         
         // Add a vibration
         if #available(iOS 10.0, *), datas.value(forKey: "vibrate") as? Bool ?? true {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         }
+        
+        // Update wealth
+        updateWealth()
+    }
+    
+    func updateWealth() {
+        // Store current wealth
+        var current: UInt64 = 0
+        
+        // Get data (preferences)
+        let datas = UserDefaults.standard
+        
+        // Iterate gift
+        for gift in Gift.library {
+            // Get count for current gift
+            let count = datas.integer(forKey: "gift_\(gift.id)")
+            
+            // Add count times value
+            current += UInt64(count) * gift.value
+        }
+        
+        // Update text
+        wealth.text = "💶 \(current.euroPrice ?? "0 €")"
+        
+        // Send to game center
+        let score = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
+        score.value = current > Int64.max ? Int64.max : Int64(current)
+        GKScore.report([score]) { error in if let error = error { print(error.localizedDescription) }}
     }
     
     @objc func shareToTwitter(_ sender: UIButton) {
@@ -113,6 +201,23 @@ class MainViewController: UIViewController {
     @objc func openSettings(_ sender: UIBarButtonItem) {
         // Open the settings view controller
         navigationController?.pushViewController(SettingsTableViewController(style: .grouped), animated: true)
+    }
+    
+    @objc func openLeaderboard(_ sender: UIGestureRecognizer) {
+        // Create a view controller
+        let viewController = GKGameCenterViewController()
+        viewController.gameCenterDelegate = self
+        viewController.viewState = .leaderboards
+        present(viewController, animated: true, completion: nil)
+    }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        // Update stack view axis
+        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+    }
+    
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
     }
 
 }
