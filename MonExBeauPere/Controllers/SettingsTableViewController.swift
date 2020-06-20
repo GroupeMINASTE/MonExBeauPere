@@ -25,10 +25,7 @@ class SettingsTableViewController: UITableViewController {
         
         // Load content
         sections += [
-            SettingsSection(name: "Apparence", elements: [
-                SettingsElementSwitch(id: "colors", text: "Activer les couleurs", d: false)
-            ]),
-            SettingsSection(name: "Système", elements: [
+            SettingsSection(name: "Configuration", elements: [
                 SettingsElementSwitch(id: "vibrate", text: "Activer les vibrations", d: true)
             ]),
             SettingsSection(name: "A propos", elements: [

@@ -19,6 +19,7 @@ class Library {
         "un iPad Pro 2020 avec un scanner LiDAR",
         "un iPhone 11 Pro 256 GB vert nuit",
         "une Apple Watch",
+        "une télévision Samsung QE55Q75T 2020",
         "un ex beau-père",
         "une nouvelle voiture",
         "un lingo d'or",
