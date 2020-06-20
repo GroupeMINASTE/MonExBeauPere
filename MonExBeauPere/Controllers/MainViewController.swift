@@ -32,7 +32,7 @@ class MainViewController: UIViewController {
         label.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -66).isActive = true
         label.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 24)
         label.textAlignment = .center
         label.numberOfLines = 0
         
@@ -61,18 +61,43 @@ class MainViewController: UIViewController {
         share.layer.masksToBounds = true
         share.layer.cornerRadius = 10
         share.addTarget(self, action: #selector(shareToTwitter(_:)), for: .touchUpInside)
+        
+        // Load a default sentence
+        generateLabel(self)
     }
 
     // Handle generate button
-    @objc func generateLabel(_ sender: UIButton) {
+    @objc func generateLabel(_ sender: Any) {
         // Get a random element from library
         guard let element = Library.objects.randomElement() else { return }
         
         // Create text
-        let text = String(format: "Mon ex beau-père m'a offert %@, je ne sais pas quoi dire... #MonExBeauPère", element)
+        let text = String(format: "Mon ex beau-père m'a offert %@, je ne sais pas quoi dire...", element)
         
         // Set text to label
         label.text = text
+        
+        // Add a vibration
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        }
+        
+        // Change color
+        if false {
+            // Generate colors
+            let background = UIColor.custom.randomElement()
+            var tint: UIColor?
+            repeat {
+                tint = UIColor.custom.randomElement()
+            } while tint == background
+            
+            // Apply colors
+            view.backgroundColor = background
+            label.textColor = .white
+            generate.backgroundColor = tint
+            share.backgroundColor = tint
+            navigationController?.navigationBar.barTintColor = tint
+        }
     }
     
     @objc func shareToTwitter(_ sender: UIButton) {
@@ -80,7 +105,7 @@ class MainViewController: UIViewController {
         guard let text = label.text, !text.isEmpty else { return }
         
         // Create URL
-        let shareString = "https://twitter.com/intent/tweet?text=\(text)"
+        let shareString = "https://twitter.com/intent/tweet?text=\(text) #MonExBeauPère"
 
         // Encode a space to %20 for example
         let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!

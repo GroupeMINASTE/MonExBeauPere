@@ -16,10 +16,14 @@ class Library {
         "HiberFile",
         "HiberLink",
         "un MacBook Pro i7 2018 avec quatre ports thunderbolt 3 gris sidéral",
+        "un iPad Pro 2020 avec un scanner LiDAR",
         "un ex beau-père",
         "une nouvelle voiture",
+        "Bruno Paiva",
         "Cédric Loneux",
-        "PickADish"
+        "Léo Duff",
+        "PickADish",
+        "FMobile"
     ]
     
 }
