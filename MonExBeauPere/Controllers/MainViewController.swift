@@ -60,6 +60,7 @@ class MainViewController: UIViewController {
         share.backgroundColor = .systemBlue
         share.layer.masksToBounds = true
         share.layer.cornerRadius = 10
+        share.addTarget(self, action: #selector(shareToTwitter(_:)), for: .touchUpInside)
     }
 
     // Handle generate button
@@ -72,6 +73,27 @@ class MainViewController: UIViewController {
         
         // Set text to label
         label.text = text
+    }
+    
+    @objc func shareToTwitter(_ sender: UIButton) {
+        // Get text
+        guard let text = label.text, !text.isEmpty else { return }
+        
+        // Create URL
+        let shareString = "https://twitter.com/intent/tweet?text=\(text)"
+
+        // Encode a space to %20 for example
+        let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+
+        // Cast to an url
+        guard let url = URL(string: escapedShareString) else { return }
+
+        // open in safari
+        if #available(iOS 10, *) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
     }
 
 }
