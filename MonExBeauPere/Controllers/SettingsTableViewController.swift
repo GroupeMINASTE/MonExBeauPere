@@ -36,29 +36,17 @@ class SettingsTableViewController: UITableViewController {
             SettingsSection(name: "Autre", elements: [
                 SettingsElementButton(id: "video1", text: "Vidéo du développement (partie 1)") { () in
                     if let url = URL(string: "https://www.youtube.com/watch?v=3h4nqTeTb8c") {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(url)
-                        } else {
-                            UIApplication.shared.openURL(url)
-                        }
+                        UIApplication.shared.open(url)
                     }
                 },
                 SettingsElementButton(id: "video2", text: "Vidéo du développement (partie 2)") { () in
                     if let url = URL(string: "https://www.youtube.com/watch?v=VWODYBZqqcU") {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(url)
-                        } else {
-                            UIApplication.shared.openURL(url)
-                        }
+                        UIApplication.shared.open(url)
                     }
                 },
                 SettingsElementButton(id: "moreApps", text: "Groupe MINASTE") { () in
                     if let url = URL(string: "https://itunes.apple.com/us/developer/groupe-minaste/id1378426984") {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(url)
-                        } else {
-                            UIApplication.shared.openURL(url)
-                        }
+                        UIApplication.shared.open(url)
                     }
                 }
             ])

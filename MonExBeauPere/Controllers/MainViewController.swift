@@ -25,7 +25,7 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         
         // Nav bar
         title = "Mon ex beau-père"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Paramètres", style: .plain, target: self, action: #selector(openSettings(_:)))
+        navigationItem.rightBarButtonItem = InfoBarButtonItem(target: self, action: #selector(openSettings(_:)))
         
         // Add views
         view.backgroundColor = .background
@@ -78,7 +78,6 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         generate.translatesAutoresizingMaskIntoConstraints = false
         generate.widthAnchor.constraint(equalToConstant: 250).isActive = true
         generate.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        generate.setTitle("Générer", for: .normal)
         generate.setTitleColor(.white, for: .normal)
         generate.backgroundColor = .systemBlue
         generate.layer.masksToBounds = true
@@ -99,8 +98,14 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         // Game center authentification
         authenticatePlayer()
         
-        // Load wealth
+        // Update button
+        updateGenerateButton()
+        
+        // Update wealth
         updateWealth()
+        
+        // Start a timer to update button
+        let _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.updateGenerateButton() }
     }
     
     // Authenticate player
@@ -134,6 +139,8 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         // Get count and save the new count
         let count = datas.integer(forKey: "gift_\(element.id)") + 1
         datas.set(count, forKey: "gift_\(element.id)")
+        datas.set(Date().timeIntervalSince1970, forKey: "lastTime")
+        datas.synchronize()
         
         // Create text
         let text = "Mon ex beau-père m'a offert \(element.name), je ne sais pas quoi dire..."
@@ -144,12 +151,15 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         details.text = detailsText
         
         // Add a vibration
-        if #available(iOS 10.0, *), datas.value(forKey: "vibrate") as? Bool ?? true {
+        if datas.value(forKey: "vibrate") as? Bool ?? true {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         }
         
         // Update wealth
         updateWealth()
+        
+        // And generate button
+        updateGenerateButton()
     }
     
     func updateWealth() {
@@ -177,6 +187,34 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         GKScore.report([score]) { error in if let error = error { print(error.localizedDescription) }}
     }
     
+    func updateGenerateButton() {
+        // Get data (preferences)
+        let datas = UserDefaults.standard
+        
+        // Get last gift time
+        let lastTime = datas.double(forKey: "lastTime")
+        
+        // Get current time
+        let currentTime = Date().timeIntervalSince1970
+        
+        // Calculate next time (hourly)
+        let nextTime = lastTime + 60*60
+        
+        // Get time left before next gift
+        let left = Int(nextTime - currentTime)
+        
+        // If time left
+        if left > 0 {
+            // Disable button and set text to time left
+            generate.isEnabled = false
+            generate.setTitle("\(left / 60) min \(left % 60) sec", for: .normal)
+        } else {
+            // It's ok
+            generate.isEnabled = true
+            generate.setTitle("Déballer", for: .normal)
+        }
+    }
+    
     @objc func shareToTwitter(_ sender: UIButton) {
         // Get text
         guard let text = label.text, !text.isEmpty else { return }
@@ -191,11 +229,7 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         guard let url = URL(string: escapedShareString) else { return }
 
         // open in safari
-        if #available(iOS 10, *) {
-            UIApplication.shared.open(url)
-        } else {
-            UIApplication.shared.openURL(url)
-        }
+        UIApplication.shared.open(url)
     }
     
     @objc func openSettings(_ sender: UIBarButtonItem) {
