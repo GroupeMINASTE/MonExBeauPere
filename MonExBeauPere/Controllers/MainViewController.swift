@@ -124,6 +124,9 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
             else if localPlayer.isAuthenticated {
                 // Load leaderboards
                 GKLeaderboard.load()
+                
+                // Update wealth
+                self.updateWealth()
             }
         }
     }
