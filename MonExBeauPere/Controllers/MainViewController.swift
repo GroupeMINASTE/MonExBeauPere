@@ -68,7 +68,6 @@ class MainViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16).isActive = true
-        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
         stackView.spacing = 16
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(generate)
@@ -106,6 +105,17 @@ class MainViewController: UIViewController {
         
         // Start a timer to update button
         let _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.updateGenerateButton() }
+    }
+    
+    // Update axis when view is shown
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateStackViewAxis()
+    }
+    
+    // Update stack view axis when needed
+    func updateStackViewAxis() {
+        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
     }
     
     // Authenticate player
@@ -200,8 +210,8 @@ class MainViewController: UIViewController {
         // Get current time
         let currentTime = Date().timeIntervalSince1970
         
-        // Calculate next time (hourly)
-        let nextTime = lastTime + 60*60
+        // Calculate next time (every 10 minutes)
+        let nextTime = lastTime + 600
         
         // Get time left before next gift
         let left = Int(nextTime - currentTime)
@@ -246,8 +256,7 @@ class MainViewController: UIViewController {
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        // Update stack view axis
-        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+        updateStackViewAxis()
     }
 
 }
