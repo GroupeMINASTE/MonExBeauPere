@@ -9,7 +9,7 @@
 import UIKit
 import GameKit
 
-class MainViewController: UIViewController, GKGameCenterControllerDelegate {
+class MainViewController: UIViewController {
     
     // Views
     let stackView = UIStackView()
@@ -17,7 +17,7 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
     let details = UILabel()
     let wealth = UILabel()
     let generate = UIButton()
-    let share = UIButton()
+    let detailedWealth = UIButton()
 
     // Load views
     override func viewDidLoad() {
@@ -43,6 +43,8 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .text
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(shareToTwitter(_:))))
         
         // Configure amount
         details.translatesAutoresizingMaskIntoConstraints = false
@@ -61,8 +63,6 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         wealth.font = .systemFont(ofSize: 17)
         wealth.textAlignment = .center
         wealth.textColor = .text
-        wealth.isUserInteractionEnabled = true
-        wealth.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openLeaderboard(_:))))
         
         // Configure the stack view
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +72,7 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         stackView.spacing = 16
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(generate)
-        stackView.addArrangedSubview(share)
+        stackView.addArrangedSubview(detailedWealth)
         
         // Configure generate
         generate.translatesAutoresizingMaskIntoConstraints = false
@@ -84,16 +84,16 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         generate.layer.cornerRadius = 10
         generate.addTarget(self, action: #selector(generateLabel(_:)), for: .touchUpInside)
         
-        // Configure share
-        share.translatesAutoresizingMaskIntoConstraints = false
-        share.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        share.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        share.setTitle("Partager", for: .normal)
-        share.setTitleColor(.white, for: .normal)
-        share.backgroundColor = .systemBlue
-        share.layer.masksToBounds = true
-        share.layer.cornerRadius = 10
-        share.addTarget(self, action: #selector(shareToTwitter(_:)), for: .touchUpInside)
+        // Configure detailedWealth
+        detailedWealth.translatesAutoresizingMaskIntoConstraints = false
+        detailedWealth.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        detailedWealth.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        detailedWealth.setTitle("Ma richesse", for: .normal)
+        detailedWealth.setTitleColor(.white, for: .normal)
+        detailedWealth.backgroundColor = .systemBlue
+        detailedWealth.layer.masksToBounds = true
+        detailedWealth.layer.cornerRadius = 10
+        detailedWealth.addTarget(self, action: #selector(openDetailedWealth(_:)), for: .touchUpInside)
         
         // Game center authentification
         authenticatePlayer()
@@ -218,7 +218,7 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         }
     }
     
-    @objc func shareToTwitter(_ sender: UIButton) {
+    @objc func shareToTwitter(_ sender: UIGestureRecognizer) {
         // Get text
         guard let text = label.text, !text.isEmpty else { return }
         
@@ -235,26 +235,19 @@ class MainViewController: UIViewController, GKGameCenterControllerDelegate {
         UIApplication.shared.open(url)
     }
     
+    @objc func openDetailedWealth(_ sender: UIButton) {
+        // Open the details view controller
+        navigationController?.pushViewController(WealthTableViewController(style: .grouped), animated: true)
+    }
+    
     @objc func openSettings(_ sender: UIBarButtonItem) {
         // Open the settings view controller
         navigationController?.pushViewController(SettingsTableViewController(style: .grouped), animated: true)
     }
     
-    @objc func openLeaderboard(_ sender: UIGestureRecognizer) {
-        // Create a view controller
-        let viewController = GKGameCenterViewController()
-        viewController.gameCenterDelegate = self
-        viewController.viewState = .leaderboards
-        present(viewController, animated: true, completion: nil)
-    }
-    
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         // Update stack view axis
         stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
-    }
-    
-    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismiss(animated: true, completion: nil)
     }
 
 }

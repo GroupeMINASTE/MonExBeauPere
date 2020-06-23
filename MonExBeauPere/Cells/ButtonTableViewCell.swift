@@ -10,7 +10,7 @@ import UIKit
 
 class ButtonTableViewCell: UITableViewCell {
 
-    var button: UIButton = UIButton()
+    let button = UIButton()
     var handler: () -> () = { () in }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

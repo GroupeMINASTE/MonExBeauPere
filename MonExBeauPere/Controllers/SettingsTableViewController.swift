@@ -52,10 +52,6 @@ class SettingsTableViewController: UITableViewController {
             ])
         ]
     }
-    
-    @objc func dismiss(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
 
     // MARK: - Table view data source
 

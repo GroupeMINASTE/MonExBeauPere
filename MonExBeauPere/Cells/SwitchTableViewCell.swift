@@ -10,9 +10,9 @@ import UIKit
 
 class SwitchTableViewCell: UITableViewCell {
 
-    var label = UILabel()
-    var switchElement = UISwitch()
-    var id = String()
+    let label = UILabel()
+    let switchElement = UISwitch()
+    var id = ""
     var preference = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
