@@ -12,10 +12,12 @@ import GameKit
 class MainViewController: UIViewController {
     
     // Views
-    let stackView = UIStackView()
+    let stats = UIStackView()
+    let buttons = UIStackView()
     let label = UILabel()
     let details = UILabel()
     let wealth = UILabel()
+    let mood = UILabel()
     let generate = UIButton()
     let detailedWealth = UIButton()
 
@@ -31,8 +33,8 @@ class MainViewController: UIViewController {
         view.backgroundColor = .background
         view.addSubview(label)
         view.addSubview(details)
-        view.addSubview(wealth)
-        view.addSubview(stackView)
+        view.addSubview(stats)
+        view.addSubview(buttons)
         
         // Configure label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,23 +57,35 @@ class MainViewController: UIViewController {
         details.textAlignment = .center
         details.textColor = .text
         
+        // Configure the stats stack view
+        stats.translatesAutoresizingMaskIntoConstraints = false
+        stats.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 16).isActive = true
+        stats.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
+        stats.spacing = 4
+        stats.distribution = .fillEqually
+        stats.addArrangedSubview(wealth)
+        stats.addArrangedSubview(mood)
+        
         // Configure wealth
         wealth.translatesAutoresizingMaskIntoConstraints = false
-        wealth.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 16).isActive = true
-        wealth.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
-        wealth.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
         wealth.font = .systemFont(ofSize: 17)
         wealth.textAlignment = .center
         wealth.textColor = .text
         
-        // Configure the stack view
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16).isActive = true
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
-        stackView.addArrangedSubview(generate)
-        stackView.addArrangedSubview(detailedWealth)
+        // Configure mood
+        mood.translatesAutoresizingMaskIntoConstraints = false
+        mood.font = .systemFont(ofSize: 17)
+        mood.textAlignment = .center
+        mood.textColor = .text
+        
+        // Configure the buttons stack view
+        buttons.translatesAutoresizingMaskIntoConstraints = false
+        buttons.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
+        buttons.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16).isActive = true
+        buttons.spacing = 16
+        buttons.distribution = .fillEqually
+        buttons.addArrangedSubview(generate)
+        buttons.addArrangedSubview(detailedWealth)
         
         // Configure generate
         generate.translatesAutoresizingMaskIntoConstraints = false
@@ -100,8 +114,8 @@ class MainViewController: UIViewController {
         // Update button
         updateGenerateButton()
         
-        // Update wealth
-        updateWealth()
+        // Update stats
+        updateStats()
         
         // Start a timer to update button
         let _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.updateGenerateButton() }
@@ -115,7 +129,8 @@ class MainViewController: UIViewController {
     
     // Update stack view axis when needed
     func updateStackViewAxis() {
-        stackView.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+        stats.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+        buttons.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
     }
     
     // Authenticate player
@@ -135,8 +150,8 @@ class MainViewController: UIViewController {
                 // Load leaderboards
                 GKLeaderboard.load()
                 
-                // Update wealth
-                self.updateWealth()
+                // Update stats
+                self.updateStats()
             }
         }
     }
@@ -147,13 +162,7 @@ class MainViewController: UIViewController {
         let datas = UserDefaults.standard
         
         // Get a random element from library
-        guard let element = Gift.library.randomElement() else { return }
-        
-        // Get count and save the new count
-        let count = datas.integer(forKey: "gift_\(element.id)") + 1
-        datas.set(count, forKey: "gift_\(element.id)")
-        datas.set(Date().timeIntervalSince1970, forKey: "lastTime")
-        datas.synchronize()
+        guard let element = Gift.unwrap() else { return }
         
         // Create text
         let text = "Mon ex beau-père m'a offert \(element.name), je ne sais pas quoi dire..."
@@ -168,14 +177,14 @@ class MainViewController: UIViewController {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         }
         
-        // Update wealth
-        updateWealth()
+        // Update stats
+        updateStats()
         
         // And generate button
         updateGenerateButton()
     }
     
-    func updateWealth() {
+    func updateStats() {
         // Store current wealth
         var current: UInt64 = 0
         
@@ -191,8 +200,11 @@ class MainViewController: UIViewController {
             current += UInt64(count) * gift.value
         }
         
-        // Update text
+        // Update wealth text
         wealth.text = "💶 \(current.euroPrice ?? "0 €")"
+        
+        // Update mood text
+        mood.text = Mood.current.name
         
         // Send to game center
         let score = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
