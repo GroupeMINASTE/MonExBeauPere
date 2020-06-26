@@ -108,8 +108,8 @@ class MainViewController: UIViewController {
     }
     
     // Update axis when view is shown
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         updateStackViewAxis()
     }
     
