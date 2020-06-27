@@ -14,8 +14,8 @@ class MainViewController: UIViewController {
     // Views
     let stats = UIStackView()
     let buttons = UIStackView()
-    let label = UILabel()
-    let details = UILabel()
+    let avatar = UIImageView()
+    let name = UILabel()
     let wealth = UILabel()
     let mood = UILabel()
     let generate = UIButton()
@@ -31,37 +31,41 @@ class MainViewController: UIViewController {
         
         // Add views
         view.backgroundColor = .background
-        view.addSubview(label)
-        view.addSubview(details)
+        view.addSubview(avatar)
+        view.addSubview(name)
         view.addSubview(stats)
         view.addSubview(buttons)
         
-        // Configure label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -50).isActive = true
-        label.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
-        label.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
-        label.font = .systemFont(ofSize: 24)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .text
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(shareToTwitter(_:))))
+        // Configure avatar
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
+        avatar.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: -50).isActive = true
+        avatar.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        avatar.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        avatar.layer.masksToBounds = true
+        avatar.layer.cornerRadius = 50
+        avatar.image = UIImage(named: "Logo")
+        avatar.isUserInteractionEnabled = true
+        avatar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(takeCare(_:))))
         
-        // Configure amount
-        details.translatesAutoresizingMaskIntoConstraints = false
-        details.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16).isActive = true
-        details.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
-        details.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
-        details.font = .systemFont(ofSize: 17)
-        details.textAlignment = .center
-        details.textColor = .text
+        // Configure name
+        name.translatesAutoresizingMaskIntoConstraints = false
+        name.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: 8).isActive = true
+        name.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
+        name.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
+        name.font = .systemFont(ofSize: 17)
+        name.textAlignment = .center
+        name.numberOfLines = 0
+        name.textColor = .text
+        name.text = "Mon ex beau-père\n(Cliquez pour s'en occuper)"
+        name.isUserInteractionEnabled = true
+        name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(takeCare(_:))))
         
         // Configure the stats stack view
         stats.translatesAutoresizingMaskIntoConstraints = false
         stats.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 16).isActive = true
         stats.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor).isActive = true
-        stats.spacing = 4
+        stats.spacing = 8
         stats.distribution = .fillEqually
         stats.addArrangedSubview(wealth)
         stats.addArrangedSubview(mood)
@@ -95,7 +99,8 @@ class MainViewController: UIViewController {
         generate.backgroundColor = .systemBlue
         generate.layer.masksToBounds = true
         generate.layer.cornerRadius = 10
-        generate.addTarget(self, action: #selector(generateLabel(_:)), for: .touchUpInside)
+        generate.setTitle("Déballer", for: .normal)
+        generate.addTarget(self, action: #selector(unwrap(_:)), for: .touchUpInside)
         
         // Configure detailedWealth
         detailedWealth.translatesAutoresizingMaskIntoConstraints = false
@@ -111,14 +116,8 @@ class MainViewController: UIViewController {
         // Game center authentification
         authenticatePlayer()
         
-        // Update button
-        updateGenerateButton()
-        
         // Update stats
         updateStats()
-        
-        // Start a timer to update button
-        let _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.updateGenerateButton() }
     }
     
     // Update axis when view is shown
@@ -157,48 +156,71 @@ class MainViewController: UIViewController {
     }
 
     // Handle generate button
-    @objc func generateLabel(_ sender: Any) {
+    @objc func unwrap(_ sender: Any) {
         // Get data (preferences)
         let datas = UserDefaults.standard
         
         // Get a random element from library
-        guard let element = Gift.unwrap() else { return }
-        
-        // Create text
-        let text = "Mon ex beau-père m'a offert \(element.name), je ne sais pas quoi dire..."
-        let detailsText = "+ \(element.value.euroPrice ?? "0 €")"
-        
-        // Set text to label
-        label.text = text
-        details.text = detailsText
-        
-        // Add a vibration
-        if datas.value(forKey: "vibrate") as? Bool ?? true {
-            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        if let element = Gift.unwrap() {
+            // Create text
+            let text = "Mon ex beau-père m'a offert \(element.name), je ne sais pas quoi dire..."
+            let detailsText = "+ \(element.value.euroPrice ?? "0 €")"
+            
+            // Create an alert
+            let alert = UIAlertController(title: text, message: detailsText, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Partager", style: .default) { _ in
+                // Create URL
+                let shareString = "https://twitter.com/intent/tweet?text=\(text) #MonExBeauPère"
+
+                // Encode a space to %20 for example
+                let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+
+                // Cast to an url
+                guard let url = URL(string: escapedShareString) else { return }
+
+                // open in safari
+                UIApplication.shared.open(url)
+            })
+            alert.addAction(UIAlertAction(title: "Fermer", style: .cancel, handler: nil))
+            
+            // And show it
+            present(alert, animated: true, completion: nil)
+            
+            // Add a vibration
+            if datas.value(forKey: "vibrate") as? Bool ?? true {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }
+            
+            // Update stats
+            updateStats()
+        } else {
+            // Create an alert
+            let alert = UIAlertController(title: "Mon ex beau-père est de mauvaise humeur", message: "Occupez vous un peu de lui", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "D'accord", style: .cancel, handler: nil))
+            
+            // And show it
+            present(alert, animated: true, completion: nil)
         }
+    }
+    
+    @objc func takeCare(_ sender: UIGestureRecognizer) {
+        // Create an alert with actions to take care
+        let alert = UIAlertController(title: "M'occuper de mon ex beau-père", message: "Que voulez vous faire ?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Lui donner à manger", style: .default, handler: { _ in
+            // TODO
+        }))
+        alert.addAction(UIAlertAction(title: "Lui trouver un copain", style: .default, handler: { _ in
+            // TODO
+        }))
+        alert.addAction(UIAlertAction(title: "Ne rien faire", style: .cancel, handler: nil))
         
-        // Update stats
-        updateStats()
-        
-        // And generate button
-        updateGenerateButton()
+        // Show this alert
+        present(alert, animated: true, completion: nil)
     }
     
     func updateStats() {
-        // Store current wealth
-        var current: UInt64 = 0
-        
-        // Get data (preferences)
-        let datas = UserDefaults.standard
-        
-        // Iterate gift
-        for gift in Gift.library {
-            // Get count for current gift
-            let count = datas.integer(forKey: "gift_\(gift.id)")
-            
-            // Add count times value
-            current += UInt64(count) * gift.value
-        }
+        // Calculate wealth
+        let current = OwnedGift.inventory.reduce(0, { $0 + UInt64($1.amount) * $1.value })
         
         // Update wealth text
         wealth.text = "💶 \(current.euroPrice ?? "0 €")"
@@ -210,51 +232,6 @@ class MainViewController: UIViewController {
         let score = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
         score.value = current > Int64.max ? Int64.max : Int64(current)
         GKScore.report([score]) { error in if let error = error { print(error.localizedDescription) }}
-    }
-    
-    func updateGenerateButton() {
-        // Get data (preferences)
-        let datas = UserDefaults.standard
-        
-        // Get last gift time
-        let lastTime = datas.double(forKey: "lastTime")
-        
-        // Get current time
-        let currentTime = Date().timeIntervalSince1970
-        
-        // Calculate next time (every 10 minutes)
-        let nextTime = lastTime + 600
-        
-        // Get time left before next gift
-        let left = Int(nextTime - currentTime)
-        
-        // If time left
-        if left > 0 {
-            // Disable button and set text to time left
-            generate.isEnabled = false
-            generate.setTitle("\(left / 60) min \(left % 60) sec", for: .normal)
-        } else {
-            // It's ok
-            generate.isEnabled = true
-            generate.setTitle("Déballer", for: .normal)
-        }
-    }
-    
-    @objc func shareToTwitter(_ sender: UIGestureRecognizer) {
-        // Get text
-        guard let text = label.text, !text.isEmpty else { return }
-        
-        // Create URL
-        let shareString = "https://twitter.com/intent/tweet?text=\(text) #MonExBeauPère"
-
-        // Encode a space to %20 for example
-        let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-
-        // Cast to an url
-        guard let url = URL(string: escapedShareString) else { return }
-
-        // open in safari
-        UIApplication.shared.open(url)
     }
     
     @objc func openDetailedWealth(_ sender: UIButton) {

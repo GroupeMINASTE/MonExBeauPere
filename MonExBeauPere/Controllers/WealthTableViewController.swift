@@ -31,26 +31,11 @@ class WealthTableViewController: UITableViewController, GKGameCenterControllerDe
     }
     
     func updateWealth() {
-        // Reset data
-        self.total = 0
-        self.gifts = []
+        // Get inventory
+        self.gifts = OwnedGift.inventory
         
-        // Get data (preferences)
-        let datas = UserDefaults.standard
-        
-        // Iterate gift
-        for gift in Gift.library {
-            // Get count for current gift
-            let count = datas.integer(forKey: "gift_\(gift.id)")
-            
-            // Add count times value
-            total += UInt64(count) * gift.value
-            
-            // Add it to owned gift
-            if count > 0 {
-                gifts.append(OwnedGift(gift, amount: count))
-            }
-        }
+        // Calculate total
+        self.total = gifts.reduce(0, { $0 + UInt64($1.amount) * $1.value })
         
         // Update tableView
         self.tableView.reloadData()

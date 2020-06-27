@@ -13,8 +13,8 @@ class Mood {
     // Mood values (references)
     static let values = [
         Mood(0, name: "😡 En colère", max: 0),
-        Mood(1, name: "😩 Dépréssif", max: 10),
-        Mood(2, name: "🥺 Triste", max: 1_000),
+        Mood(1, name: "😩 Déprimé", max: 10),
+        Mood(2, name: "🥺 Triste", max: 500),
         Mood(3, name: "😐 Neutre", max: 10_000),
         Mood(4, name: "🙂 Content", max: 50_000),
         Mood(5, name: "😊 Heureux", max: 500_000)
