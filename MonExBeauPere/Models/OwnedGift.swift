@@ -57,7 +57,10 @@ class OwnedGift {
         datas.synchronize()
         
         // Update current mood
-        Mood.current = Mood.current.next()
+        guard let up = Mood.value(max: value) else { return }
+        for _ in 0 ..< up.id + 2 {
+            Mood.current = Mood.current.next()
+        }
     }
     
 }

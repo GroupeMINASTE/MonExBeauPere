@@ -223,7 +223,20 @@ class MainViewController: UIViewController {
     
     func takeCare(with kind: Kind) {
         // Create the controller
-        let controller = TakeCareTableViewController(kind: kind, completionHandler: updateStats)
+        let controller = TakeCareTableViewController(kind: kind) { gift in
+            // Update status
+            self.updateStats()
+            
+            // Create confirmation message
+            let message = "Il \(kind.verb) avec \(gift.name) !"
+            
+            // Create an alert
+            let alert = UIAlertController(title: "Mon ex beau-père est de meilleur humeur", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "D'accord", style: .cancel, handler: nil))
+            
+            // And show it
+            self.present(alert, animated: true, completion: nil)
+        }
         
         // Present it
         present(UINavigationController(rootViewController: controller), animated: true, completion: nil)

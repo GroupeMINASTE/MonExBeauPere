@@ -25,6 +25,11 @@ class Mood {
         return values.first(where: { $0.id == id })
     }
     
+    // Get a mood by max in item
+    static func value(max: UInt64) -> Mood? {
+        return values.last(where: { $0.max <= max })
+    }
+    
     // Get current mood
     static var current: Mood {
         get {

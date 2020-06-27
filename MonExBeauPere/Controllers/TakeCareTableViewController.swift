@@ -12,11 +12,11 @@ class TakeCareTableViewController: UITableViewController {
 
     // Data shown in tableView
     let kind: Kind
-    let completionHandler: () -> ()
+    let completionHandler: (Gift) -> ()
     var gifts = [OwnedGift]()
     
     // Initializer
-    init(kind: Kind, completionHandler: @escaping () -> ()) {
+    init(kind: Kind, completionHandler: @escaping (Gift) -> ()) {
         // Save kind
         self.kind = kind
         self.completionHandler = completionHandler
@@ -76,11 +76,11 @@ class TakeCareTableViewController: UITableViewController {
         // Use on mood
         gift.useOnMood()
         
-        // And call completion handler
-        completionHandler()
-        
-        // Finally dismiss
-        dismiss(animated: true, completion: nil)
+        // And dismiss
+        dismiss(animated: true) {
+            // Call completion handler
+            self.completionHandler(gift.gift)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
