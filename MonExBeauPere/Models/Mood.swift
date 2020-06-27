@@ -62,9 +62,20 @@ class Mood {
     }
     
     // Get next mood
-    func next(times: Int = 1) -> Mood {
+    func next() -> Mood {
         // Check if there is a next mood
-        if let next = Mood.value(for: id + times) {
+        if let next = Mood.value(for: id + 1) {
+            return next
+        }
+        
+        // Return self
+        return self
+    }
+    
+    // Get previous mood
+    func previous() -> Mood {
+        // Check if there is a previous mood
+        if let next = Mood.value(for: id - 1) {
             return next
         }
         

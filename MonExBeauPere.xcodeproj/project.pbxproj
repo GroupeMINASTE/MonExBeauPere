@@ -15,6 +15,7 @@
 		6A2CBC46249EBEC200A3A5FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2CBC45249EBEC200A3A5FF /* GameKit.framework */; };
 		6A90960B24A6A6FB002ED9A3 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960A24A6A6FB002ED9A3 /* Mood.swift */; };
 		6A90960D24A6B5A6002ED9A3 /* Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960C24A6B5A6002ED9A3 /* Kind.swift */; };
+		6A90960F24A6C789002ED9A3 /* TakeCareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960E24A6C789002ED9A3 /* TakeCareTableViewController.swift */; };
 		6AB2C010249E2B7900E748A2 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2C00F249E2B7900E748A2 /* UIColorExtension.swift */; };
 		6AB2C012249E2BE600E748A2 /* Gift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2C011249E2BE600E748A2 /* Gift.swift */; };
 		6AB2C014249E631200E748A2 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB2C013249E631200E748A2 /* SettingsTableViewController.swift */; };
@@ -40,6 +41,7 @@
 		6A2CBC45249EBEC200A3A5FF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		6A90960A24A6A6FB002ED9A3 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		6A90960C24A6B5A6002ED9A3 /* Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kind.swift; sourceTree = "<group>"; };
+		6A90960E24A6C789002ED9A3 /* TakeCareTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeCareTableViewController.swift; sourceTree = "<group>"; };
 		6AB2C00F249E2B7900E748A2 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		6AB2C011249E2BE600E748A2 /* Gift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gift.swift; sourceTree = "<group>"; };
 		6AB2C013249E631200E748A2 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				6A007AC1249E291D00F5A393 /* MainViewController.swift */,
 				6AB2C013249E631200E748A2 /* SettingsTableViewController.swift */,
+				6A90960E24A6C789002ED9A3 /* TakeCareTableViewController.swift */,
 				6AC16DCD24A1E730001FE737 /* WealthTableViewController.swift */,
 			);
 			path = Controllers;
@@ -239,6 +242,7 @@
 				6AE9FFB2249F8776008C6EFB /* InfoBarButtonItem.swift in Sources */,
 				6A2CBC43249EB70300A3A5FF /* UInt64Extension.swift in Sources */,
 				6AB2C010249E2B7900E748A2 /* UIColorExtension.swift in Sources */,
+				6A90960F24A6C789002ED9A3 /* TakeCareTableViewController.swift in Sources */,
 				6A90960D24A6B5A6002ED9A3 /* Kind.swift in Sources */,
 				6AB2C01F249E63F000E748A2 /* SwitchTableViewCell.swift in Sources */,
 				6AC16DD024A1E87D001FE737 /* OwnedGift.swift in Sources */,
@@ -381,7 +385,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -401,7 +405,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

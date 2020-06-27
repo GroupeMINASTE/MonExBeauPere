@@ -13,8 +13,8 @@ class Gift {
     // Liste des objets pour la génération des phrases
     static let library = [
         Gift(1, name: "un coussin de mie fourré à la délicate viande de bœuf sur son nid de salade", value: 5, kind: .food),
-        Gift(2, name: "HiberFile", value: 1_000, kind: .other),
-        Gift(3, name: "HiberLink", value: 100, kind: .other),
+        Gift(2, name: "HiberFile", value: 1_000, kind: .entertainment),
+        Gift(3, name: "HiberLink", value: 100, kind: .entertainment),
         Gift(4, name: "un MacBook Pro i7 2018 avec quatre ports thunderbolt 3 gris sidéral", value: 2_699, kind: .other),
         Gift(5, name: "un iPad Pro 2020 avec un scanner LiDAR", value: 899, kind: .other),
         Gift(6, name: "un iPhone 11 Pro 256 GB vert nuit", value: 1_329, kind: .other),
@@ -25,15 +25,15 @@ class Gift {
         Gift(11, name: "un lingot d'or de 500g", value: 26_800, kind: .other),
         Gift(12, name: "une villa en Corse", value: 500_000, kind: .other),
         Gift(13, name: "une villa en Croatie", value: 0, kind: .other),
-        Gift(14, name: "une piscine à débordement", value: 10_000, kind: .other),
+        Gift(14, name: "une piscine à débordement", value: 10_000, kind: .entertainment),
         Gift(15, name: "Nathan Fallet", value: 100, kind: .person),
         Gift(16, name: "Bruno Paiva", value: 50, kind: .person),
         Gift(17, name: "Cédric Loneux", value: 50, kind: .person),
         Gift(18, name: "Léo Duff", value: 300, kind: .person),
         Gift(19, name: "Tim Cook", value: 300_000, kind: .person),
-        Gift(20, name: "PickADish", value: 50, kind: .other),
+        Gift(20, name: "PickADish", value: 50, kind: .entertainment),
         Gift(21, name: "le Groupe MINASTE", value: 50_000, kind: .other),
-        Gift(22, name: "FMobile", value: 100, kind: .other),
+        Gift(22, name: "FMobile", value: 100, kind: .entertainment),
         Gift(23, name: "une soupe à l'oignon", value: 1, kind: .food),
         Gift(24, name: "des pommes de terre sautées", value: 1, kind: .food),
         Gift(25, name: "de la compote de pommes", value: 1, kind: .food),
@@ -43,8 +43,8 @@ class Gift {
         Gift(29, name: "une bouteille de Jack Daniels de 70 cl", value: 12, kind: .food),
         Gift(30, name: "un compte Apple Developer pour un an", value: 99, kind: .other),
         Gift(31, name: "un compte Google Play Developer à vie", value: 25, kind: .other),
-        Gift(32, name: "un compte Netflix Premium pour un mois", value: 16, kind: .other),
-        Gift(33, name: "un compte Spotify Premium pour un mois", value: 10, kind: .other),
+        Gift(32, name: "un compte Netflix Premium pour un mois", value: 16, kind: .entertainment),
+        Gift(33, name: "un compte Spotify Premium pour un mois", value: 10, kind: .entertainment),
         Gift(34, name: "le N°5 de Chanel", value: 99, kind: .other),
         Gift(35, name: "un sac Louis Vuitton", value: 999, kind: .other),
         Gift(36, name: "un collier en or de Dior", value: 499, kind: .other),
@@ -76,7 +76,7 @@ class Gift {
         datas.synchronize()
         
         // Update the mood
-        Mood.current = mood.next(times: -1)
+        Mood.current = mood.previous()
         
         // Return picked gift
         return element

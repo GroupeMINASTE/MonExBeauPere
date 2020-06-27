@@ -12,6 +12,7 @@ enum Kind {
     
     case food
     case person
+    case entertainment
     case other
     
 }

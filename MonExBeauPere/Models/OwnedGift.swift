@@ -47,4 +47,17 @@ class OwnedGift {
         self.amount = amount
     }
     
+    // Remove one from inventory
+    func useOnMood() {
+        // Get data (preferences)
+        let datas = UserDefaults.standard
+        
+        // Update count
+        datas.set(datas.integer(forKey: "gift_\(id)") - 1, forKey: "gift_\(id)")
+        datas.synchronize()
+        
+        // Update current mood
+        Mood.current = Mood.current.next()
+    }
+    
 }

@@ -206,16 +206,27 @@ class MainViewController: UIViewController {
     @objc func takeCare(_ sender: UIGestureRecognizer) {
         // Create an alert with actions to take care
         let alert = UIAlertController(title: "M'occuper de mon ex beau-père", message: "Que voulez vous faire ?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Lui donner à manger", style: .default, handler: { _ in
-            // TODO
+        alert.addAction(UIAlertAction(title: "Lui offrir à manger", style: .default, handler: { _ in
+            self.takeCare(with: .food)
         }))
         alert.addAction(UIAlertAction(title: "Lui trouver un copain", style: .default, handler: { _ in
-            // TODO
+            self.takeCare(with: .person)
+        }))
+        alert.addAction(UIAlertAction(title: "Lui offrir un divertissement", style: .default, handler: { _ in
+            self.takeCare(with: .entertainment)
         }))
         alert.addAction(UIAlertAction(title: "Ne rien faire", style: .cancel, handler: nil))
         
         // Show this alert
         present(alert, animated: true, completion: nil)
+    }
+    
+    func takeCare(with kind: Kind) {
+        // Create the controller
+        let controller = TakeCareTableViewController(kind: kind, completionHandler: updateStats)
+        
+        // Present it
+        present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
     }
     
     func updateStats() {
