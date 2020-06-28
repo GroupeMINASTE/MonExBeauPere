@@ -128,8 +128,8 @@ class MainViewController: UIViewController {
     
     // Update stack view axis when needed
     func updateStackViewAxis() {
-        stats.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
-        buttons.axis = UIDevice.current.orientation.isPortrait ? .vertical : .horizontal
+        stats.axis = UIApplication.shared.statusBarOrientation.isPortrait ? .vertical : .horizontal
+        buttons.axis = UIApplication.shared.statusBarOrientation.isPortrait ? .vertical : .horizontal
     }
     
     // Authenticate player
