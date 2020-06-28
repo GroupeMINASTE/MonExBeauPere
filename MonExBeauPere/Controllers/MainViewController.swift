@@ -170,7 +170,7 @@ class MainViewController: UIViewController {
             let alert = UIAlertController(title: text, message: detailsText, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Partager", style: .default) { _ in
                 // Create URL
-                let shareString = "https://twitter.com/intent/tweet?text=\(text) @MonExBeauPere"
+                let shareString = "https://twitter.com/intent/tweet?text=\(text) @MonExBeauPere "
 
                 // Encode a space to %20 for example
                 let escapedShareString = shareString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
