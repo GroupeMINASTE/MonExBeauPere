@@ -269,7 +269,7 @@ class MainViewController: UIViewController {
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        updateStackViewAxis()
+        coordinator.animate(alongsideTransition: { _ in self.updateStackViewAxis() })
     }
 
 }
