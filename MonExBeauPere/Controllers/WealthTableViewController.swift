@@ -78,7 +78,6 @@ class WealthTableViewController: UITableViewController, GKGameCenterControllerDe
         let viewController = GKGameCenterViewController()
         viewController.gameCenterDelegate = self
         viewController.viewState = .leaderboards
-        viewController.leaderboardIdentifier = "me.nathanfallet.MonExBeauPere.wealth"
         present(viewController, animated: true, completion: nil)
     }
     

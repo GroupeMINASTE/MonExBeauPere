@@ -8,6 +8,7 @@
 
 import UIKit
 import GameKit
+import StoreKit
 
 class MainViewController: UIViewController {
     
@@ -243,8 +244,11 @@ class MainViewController: UIViewController {
     }
     
     func updateStats() {
+        // Get inventory
+        let inventory = OwnedGift.inventory
+        
         // Calculate wealth
-        let current = OwnedGift.inventory.reduce(0, { $0 + UInt64($1.amount) * $1.value })
+        let current = inventory.reduce(0, { $0 + UInt64($1.amount) * $1.value })
         
         // Update wealth text
         wealth.text = "💶 \(current.euroPrice ?? "0 €")"
@@ -253,9 +257,16 @@ class MainViewController: UIViewController {
         mood.text = Mood.current.name
         
         // Send to game center
-        let score = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
-        score.value = current > Int64.max ? Int64.max : Int64(current)
-        GKScore.report([score]) { error in if let error = error { print(error.localizedDescription) }}
+        let wealthScore = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
+        wealthScore.value = current > Int64.max ? Int64.max : Int64(current)
+        let inventoryScore = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.inventory")
+        inventoryScore.value = Int64(inventory.count)
+        GKScore.report([wealthScore, inventoryScore]) { error in if let error = error { print(error.localizedDescription) }}
+        
+        // Check for review
+        if #available(iOS 10.3, *), inventory.count == 50 || inventory.count % 100 == 0 {
+            SKStoreReviewController.requestReview()
+        }
     }
     
     @objc func openDetailedWealth(_ sender: UIButton) {

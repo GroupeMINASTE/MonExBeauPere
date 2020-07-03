@@ -51,7 +51,9 @@ class Gift {
         Gift(37, name: "une montre Diesel en acier doré", value: 219, kind: .other),
         Gift(38, name: "un sac à dos GUCCI", value: 2_690, kind: .other),
         Gift(39, name: "un Double Whopper Cheese", value: 8, kind: .food),
-        Gift(40, name: "un Big Mac", value: 8, kind: .food)
+        Gift(40, name: "un Big Mac", value: 8, kind: .food),
+        Gift(41, name: "un Bacon Lover", value: 8, kind: .food),
+        Gift(42, name: "le AirPod de Léo Duff", value: 89, kind: .entertainment)
     ]
     
     // Get library filtered by mood

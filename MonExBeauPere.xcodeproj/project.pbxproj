@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,8 @@
 		6A007ACA249E292F00F5A393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A007AC8249E292F00F5A393 /* LaunchScreen.storyboard */; };
 		6A2CBC43249EB70300A3A5FF /* UInt64Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2CBC42249EB70300A3A5FF /* UInt64Extension.swift */; };
 		6A2CBC46249EBEC200A3A5FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2CBC45249EBEC200A3A5FF /* GameKit.framework */; };
+		6A4DA6F424AFC96100126ED0 /* DonateViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 6A4DA6F324AFC96100126ED0 /* DonateViewController */; };
+		6A4DA6F624AFCE7B00126ED0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A4DA6F524AFCE7B00126ED0 /* StoreKit.framework */; };
 		6A90960B24A6A6FB002ED9A3 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960A24A6A6FB002ED9A3 /* Mood.swift */; };
 		6A90960D24A6B5A6002ED9A3 /* Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960C24A6B5A6002ED9A3 /* Kind.swift */; };
 		6A90960F24A6C789002ED9A3 /* TakeCareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A90960E24A6C789002ED9A3 /* TakeCareTableViewController.swift */; };
@@ -39,6 +41,7 @@
 		6A007ACB249E292F00F5A393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A2CBC42249EB70300A3A5FF /* UInt64Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt64Extension.swift; sourceTree = "<group>"; };
 		6A2CBC45249EBEC200A3A5FF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		6A4DA6F524AFCE7B00126ED0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6A90960A24A6A6FB002ED9A3 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		6A90960C24A6B5A6002ED9A3 /* Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kind.swift; sourceTree = "<group>"; };
 		6A90960E24A6C789002ED9A3 /* TakeCareTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeCareTableViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A4DA6F624AFCE7B00126ED0 /* StoreKit.framework in Frameworks */,
+				6A4DA6F424AFC96100126ED0 /* DonateViewController in Frameworks */,
 				6A2CBC46249EBEC200A3A5FF /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +132,7 @@
 		6A2CBC44249EBEC200A3A5FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6A4DA6F524AFCE7B00126ED0 /* StoreKit.framework */,
 				6A2CBC45249EBEC200A3A5FF /* GameKit.framework */,
 			);
 			name = Frameworks;
@@ -177,6 +183,9 @@
 			dependencies = (
 			);
 			name = MonExBeauPere;
+			packageProductDependencies = (
+				6A4DA6F324AFC96100126ED0 /* DonateViewController */,
+			);
 			productName = MonExBeauPere;
 			productReference = 6A007ABA249E291C00F5A393 /* Ex beau-pere.app */;
 			productType = "com.apple.product-type.application";
@@ -205,6 +214,9 @@
 				Base,
 			);
 			mainGroup = 6A007AB1249E291C00F5A393;
+			packageReferences = (
+				6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */,
+			);
 			productRefGroup = 6A007ABB249E291C00F5A393 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -385,7 +397,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -393,6 +405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.nathanfallet.MonExBeauPere;
 				PRODUCT_NAME = "Ex beau-pere";
 				SWIFT_VERSION = 5.0;
@@ -405,7 +418,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -413,6 +426,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.nathanfallet.MonExBeauPere;
 				PRODUCT_NAME = "Ex beau-pere";
 				SWIFT_VERSION = 5.0;
@@ -442,6 +456,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/GroupeMINASTE/DonateViewController.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6A4DA6F324AFC96100126ED0 /* DonateViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */;
+			productName = DonateViewController;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6A007AB2249E291C00F5A393 /* Project object */;
 }

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import DonateViewController
 
-class SettingsTableViewController: UITableViewController {
+class SettingsTableViewController: UITableViewController, DonateViewControllerDelegate {
     
     var sections = [SettingsSection]()
     
@@ -34,20 +35,32 @@ class SettingsTableViewController: UITableViewController {
                 SettingsElementLabel(id: "copy3", text: "© 2020 Groupe MINASTE")
             ]),
             SettingsSection(name: "Autre", elements: [
-                SettingsElementButton(id: "video1", text: "Vidéo du développement (partie 1)") { () in
+                SettingsElementButton(id: "video1", text: "Vidéo du développement (partie 1)") {
                     if let url = URL(string: "https://www.youtube.com/watch?v=3h4nqTeTb8c") {
                         UIApplication.shared.open(url)
                     }
                 },
-                SettingsElementButton(id: "video2", text: "Vidéo du développement (partie 2)") { () in
+                SettingsElementButton(id: "video2", text: "Vidéo du développement (partie 2)") {
                     if let url = URL(string: "https://www.youtube.com/watch?v=VWODYBZqqcU") {
                         UIApplication.shared.open(url)
                     }
                 },
-                SettingsElementButton(id: "moreApps", text: "Groupe MINASTE") { () in
-                    if let url = URL(string: "https://itunes.apple.com/us/developer/groupe-minaste/id1378426984") {
+                SettingsElementButton(id: "twitter", text: "Twitter du projet") {
+                    if let url = URL(string: "https://twitter.com/MonExBeauPere") {
                         UIApplication.shared.open(url)
                     }
+                },
+                SettingsElementButton(id: "donate", text: "Faire un don") {
+                    let controller = DonateViewController()
+                    
+                    controller.title = "Faire un don"
+                    controller.header = "Sélectionnez le montant à donner :"
+                    controller.footer = "Ce don va aider notre association à développer ses projets, notamment Extopy."
+                    controller.delegate = self
+                    
+                    controller.add(identifier: "me.nathanfallet.MonExBeauPere.donate1")
+                    
+                    self.navigationController?.pushViewController(controller, animated: true)
                 }
             ])
         ]
@@ -90,6 +103,16 @@ class SettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
+    }
+    
+    func donateViewController(_ controller: DonateViewController, didDonationSucceed donation: Donation) {
+        let alert = UIAlertController(title: "Merci du don !", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Fermer", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func donateViewController(_ controller: DonateViewController, didDonationFailed donation: Donation) {
+        print("Donation failed.")
     }
 
 }
