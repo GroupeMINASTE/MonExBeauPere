@@ -55,10 +55,12 @@ class SettingsTableViewController: UITableViewController, DonateViewControllerDe
                     
                     controller.title = "Faire un don"
                     controller.header = "Sélectionnez le montant à donner :"
-                    controller.footer = "Ce don va aider notre association à développer ses projets, notamment Extopy."
+                    controller.footer = "Ce don va aider notre association à développer ses projets, notamment Extopy, le réseau social que nous développons, qui va nécessiter principalement du stockage sur ses serveurs."
                     controller.delegate = self
                     
                     controller.add(identifier: "me.nathanfallet.MonExBeauPere.donate1")
+                    controller.add(identifier: "me.nathanfallet.MonExBeauPere.donate2")
+                    controller.add(identifier: "me.nathanfallet.MonExBeauPere.donate3")
                     
                     self.navigationController?.pushViewController(controller, animated: true)
                 }
