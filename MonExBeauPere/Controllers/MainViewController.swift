@@ -250,6 +250,9 @@ class MainViewController: UIViewController {
         // Calculate wealth
         let current = inventory.reduce(0, { $0 + UInt64($1.amount) * $1.value })
         
+        // And inventory count
+        let count = inventory.reduce(0, { $0 + UInt64($1.amount) })
+        
         // Update wealth text
         wealth.text = "💶 \(current.euroPrice ?? "0 €")"
         
@@ -260,11 +263,11 @@ class MainViewController: UIViewController {
         let wealthScore = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.wealth")
         wealthScore.value = current > Int64.max ? Int64.max : Int64(current)
         let inventoryScore = GKScore(leaderboardIdentifier: "me.nathanfallet.MonExBeauPere.inventory")
-        inventoryScore.value = Int64(inventory.count)
+        inventoryScore.value = Int64(count)
         GKScore.report([wealthScore, inventoryScore]) { error in if let error = error { print(error.localizedDescription) }}
         
         // Check for review
-        if #available(iOS 10.3, *), inventory.count == 50 || inventory.count % 100 == 0 {
+        if #available(iOS 10.3, *), count == 50 || count % 100 == 0 {
             SKStoreReviewController.requestReview()
         }
     }
