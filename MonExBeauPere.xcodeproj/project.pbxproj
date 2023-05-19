@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		6A007AC2249E291D00F5A393 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A007AC1249E291D00F5A393 /* MainViewController.swift */; };
 		6A007AC7249E292F00F5A393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A007AC6249E292F00F5A393 /* Assets.xcassets */; };
 		6A007ACA249E292F00F5A393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A007AC8249E292F00F5A393 /* LaunchScreen.storyboard */; };
+		6A07C0DE2A1835F500E41C15 /* MyAppsiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 6A07C0DD2A1835F500E41C15 /* MyAppsiOS */; };
 		6A2CBC43249EB70300A3A5FF /* UInt64Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2CBC42249EB70300A3A5FF /* UInt64Extension.swift */; };
 		6A2CBC46249EBEC200A3A5FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2CBC45249EBEC200A3A5FF /* GameKit.framework */; };
 		6A4DA6F424AFC96100126ED0 /* DonateViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 6A4DA6F324AFC96100126ED0 /* DonateViewController */; };
@@ -66,6 +67,7 @@
 			files = (
 				6A4DA6F624AFCE7B00126ED0 /* StoreKit.framework in Frameworks */,
 				6A4DA6F424AFC96100126ED0 /* DonateViewController in Frameworks */,
+				6A07C0DE2A1835F500E41C15 /* MyAppsiOS in Frameworks */,
 				6A2CBC46249EBEC200A3A5FF /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +187,7 @@
 			name = MonExBeauPere;
 			packageProductDependencies = (
 				6A4DA6F324AFC96100126ED0 /* DonateViewController */,
+				6A07C0DD2A1835F500E41C15 /* MyAppsiOS */,
 			);
 			productName = MonExBeauPere;
 			productReference = 6A007ABA249E291C00F5A393 /* Ex beau-pere.app */;
@@ -196,8 +199,9 @@
 		6A007AB2249E291C00F5A393 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1150;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Nathan FALLET";
 				TargetAttributes = {
 					6A007AB9249E291C00F5A393 = {
@@ -216,6 +220,7 @@
 			mainGroup = 6A007AB1249E291C00F5A393;
 			packageReferences = (
 				6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */,
+				6A07C0DC2A1835F500E41C15 /* XCRemoteSwiftPackageReference "MyApps" */,
 			);
 			productRefGroup = 6A007ABB249E291C00F5A393 /* Products */;
 			projectDirPath = "";
@@ -304,6 +309,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -364,6 +370,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -397,15 +404,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ex beau-père";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.casino-games";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.nathanfallet.MonExBeauPere;
 				PRODUCT_NAME = "Ex beau-pere";
 				SWIFT_VERSION = 5.0;
@@ -418,15 +427,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = ZL9396WK65;
 				INFOPLIST_FILE = MonExBeauPere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ex beau-père";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.casino-games";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = me.nathanfallet.MonExBeauPere;
 				PRODUCT_NAME = "Ex beau-pere";
 				SWIFT_VERSION = 5.0;
@@ -458,6 +469,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6A07C0DC2A1835F500E41C15 /* XCRemoteSwiftPackageReference "MyApps" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NathanFallet/MyApps";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/GroupeMINASTE/DonateViewController.git";
@@ -469,6 +488,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6A07C0DD2A1835F500E41C15 /* MyAppsiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A07C0DC2A1835F500E41C15 /* XCRemoteSwiftPackageReference "MyApps" */;
+			productName = MyAppsiOS;
+		};
 		6A4DA6F324AFC96100126ED0 /* DonateViewController */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6A4DA6F224AFC96100126ED0 /* XCRemoteSwiftPackageReference "DonateViewController" */;

@@ -8,6 +8,7 @@
 
 import UIKit
 import DonateViewController
+import MyAppsiOS
 
 class SettingsTableViewController: UITableViewController, DonateViewControllerDelegate {
     
@@ -23,6 +24,7 @@ class SettingsTableViewController: UITableViewController, DonateViewControllerDe
         tableView.register(LabelTableViewCell.self, forCellReuseIdentifier: "labelCell")
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: "switchCell")
         tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: "buttonCell")
+        tableView.register(MyAppTableViewCell.self, forCellReuseIdentifier: "myAppCell")
         
         // Load content
         sections += [
@@ -71,18 +73,22 @@ class SettingsTableViewController: UITableViewController, DonateViewControllerDe
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return sections.count + 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].elements.count
+        return section == sections.count ? MyApp.values.count : sections[section].elements.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].name
+        return section == sections.count ? MyAppHeaderText.localizedString : sections[section].name
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == sections.count {
+            return (tableView.dequeueReusableCell(withIdentifier: "myAppCell", for: indexPath) as! MyAppTableViewCell).with(app: MyApp.values[indexPath.row])
+        }
+        
         let element = sections[indexPath.section].elements[indexPath.row]
         
         if let e = element as? SettingsElementLabel {
@@ -103,8 +109,14 @@ class SettingsTableViewController: UITableViewController, DonateViewControllerDe
         return UITableViewCell()
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == sections.count {
+            (tableView.cellForRow(at: indexPath) as? MyAppTableViewCell)?.openURL()
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        return indexPath.section == sections.count ? 68 : 44
     }
     
     func donateViewController(_ controller: DonateViewController, didDonationSucceed donation: Donation) {
